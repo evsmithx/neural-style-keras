@@ -22,7 +22,7 @@ def conv(x, n_filters, kernel_size=3, stride=1, relu=True, nb_classes=1, targets
     '''
     if not kernel_size % 2:
         raise ValueError('Expected odd kernel size.')
-    pad = (kernel_size - 1) / 2
+    pad = (kernel_size - 1) // 2
     o = ReflectionPadding2D(padding=(pad, pad))(x)
     o = Convolution2D(n_filters, kernel_size, kernel_size,
                       subsample=(stride, stride), init=weights_init)(o)

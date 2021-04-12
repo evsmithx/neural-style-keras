@@ -15,7 +15,8 @@ from utils import config_gpu, preprocess_image_scale, deprocess_image
 import h5py
 import yaml
 import time
-from scipy.misc import imsave
+# from scipy.misc import imsave
+import imageio
 
 from model import pastiche_model
 
@@ -57,7 +58,7 @@ if __name__ == '__main__':
 
     num_batches = int(np.ceil(model_args.nb_classes / float(args.batch_size)))
 
-    for img_name in os.listdir(args.input_path):
+    for img_name in [args.input_path]:  # changed to give single file
         print('Processing %s' %img_name)
         img = preprocess_image_scale(os.path.join(args.input_path, img_name),
                                      img_size=args.img_size)
@@ -80,5 +81,7 @@ if __name__ == '__main__':
 
             for name, im in zip(names, out):
                 print('Saving file %s_style_%s.png' %(out_name, str(name)))
-                imsave(os.path.join(args.output_path, '%s_style_%s.png' %(out_name, str(name))),
+                # outfile = os.path.join(args.output_path, '%s_style_%s.png' %(out_name, str(name)))
+                outfile = args.output_path
+                imageio.imwrite(outfile,
                        deprocess_image(im[None, :, :, :].copy()))
